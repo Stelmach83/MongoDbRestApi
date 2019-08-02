@@ -10,7 +10,6 @@ public interface EmployeeRepository extends MongoRepository<Employee, Long> {
 
     long countEmployeesByEmail(String email);
     Employee getDistinctByEmail(String email);
-    @Query("COUNT(emp) Employee emp WHERE")
     long countEmployeesByIdAndAndEmail(long id, String email);
 
 }
