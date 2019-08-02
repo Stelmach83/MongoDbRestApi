@@ -3,13 +3,17 @@ package dev.stelmach.homeworkapi.model;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "employee")
 public class Employee {
 
+    @Transient
+    public static final String SEQUENCE_NAME = "employee_sequences";
+
     @Id
-    private int id;
+    private long id;
     private String firstName;
     private String lastName;
     private String email;
@@ -18,11 +22,11 @@ public class Employee {
     public Employee() {
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

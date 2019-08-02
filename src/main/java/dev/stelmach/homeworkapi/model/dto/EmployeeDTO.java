@@ -1,21 +1,40 @@
 package dev.stelmach.homeworkapi.model.dto;
 
+import dev.stelmach.homeworkapi.validation.UniqueEmail;
+import dev.stelmach.homeworkapi.validation.UniqueEmailForExistingUser;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 public class EmployeeDTO {
 
-    private String id;
+    private long id;
     private String firstName;
     private String lastName;
+    @Email(message = "Field 'email' must be a valid email format", groups = {EmployeeDTO.New.class, EmployeeDTO.Existing.class})
+    @NotNull(message = "Field 'email' cannot be empty", groups = {EmployeeDTO.New.class, EmployeeDTO.Existing.class})
+    @UniqueEmail(message = "This 'email' is already taken", groups = {EmployeeDTO.New.class, EmployeeDTO.Existing.class})
+//    @UniqueEmailForExistingUser(message = "This 'email' is already taken", groups = {EmployeeDTO.Existing.class})
     private String email;
+    // FIX REGEX FOR US PHONE NUMBER
+    @Pattern(regexp = "^(0|[1-9][0-9]*)$", message = "Must be a US phone number.", groups = {EmployeeDTO.New.class, EmployeeDTO.Existing.class})
     private String phoneNumber;
 
     public EmployeeDTO() {
     }
 
-    public String getId() {
+    public interface Existing {
+    }
+
+    public interface New {
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
