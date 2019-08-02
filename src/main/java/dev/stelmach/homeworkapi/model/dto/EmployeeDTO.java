@@ -17,8 +17,7 @@ public class EmployeeDTO {
     @UniqueEmail(message = "This 'email' is already taken", groups = {EmployeeDTO.New.class, EmployeeDTO.Existing.class})
 //    @UniqueEmailForExistingUser(message = "This 'email' is already taken", groups = {EmployeeDTO.Existing.class})
     private String email;
-    // FIX REGEX FOR US PHONE NUMBER
-    @Pattern(regexp = "^([0-9]( |-)?)?(\\(?[0-9]{3}\\)?|[0-9]{3})( |-)?([0-9]{3}( |-)?[0-9]{4}|[a-zA-Z0-9]{7})$",
+    @Pattern(regexp = "^([\\+]?[1]( |-)?)?(\\(?[0-9]{3}\\)?|[0-9]{3})( |-)?([0-9]{3}( |-)?[0-9]{4}|[a-zA-Z0-9]{7})$",
             message = "Must be a US phone number.", groups = {EmployeeDTO.New.class, EmployeeDTO.Existing.class})
     private String phoneNumber;
 
