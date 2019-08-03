@@ -47,22 +47,24 @@ public class EmployeeController {
             Employee newEmployee = employeeHelper.convertEmployeeDTOtoEmployeeAndGenerateId(employeeDTO);
             employeeService.createEmployee(newEmployee);
             ApiResponse response = new ApiResponse(201, "CREATED", newEmployee);
+            log(response);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         }
     }
 
     @PutMapping("/employees/{id}")
     public ResponseEntity<ApiResponse> updateEmployee(
-            @PathVariable(name = "id") long id, @Validated(EmployeeDTO.Existing.class) @RequestBody EmployeeDTO employeeDTO,
-            BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
+            @PathVariable(name = "id") long id,
+            @Validated(EmployeeDTO.Existing.class) @RequestBody EmployeeDTO employeeDTO, BindingResult bindingResult) {
+        Employee employee = employeeService.findEmployeeById(id)
+                .orElseThrow(() -> new ResourceException(String.format("Could not find Employee by the id: %s", id)));
+        if (!employeeService.validateUpdatedEmployee(employee, employeeDTO, bindingResult)) {
             throw new EmployeeModelException(bindingResult);
         } else {
-            Employee employee = employeeService.findEmployeeById(id)
-                    .orElseThrow(() -> new ResourceException(String.format("Could not find Employee by the id: %s", id)));
             employeeHelper.updatedEmployee(employee, employeeDTO);
             employeeService.updateEmployee(employee);
             ApiResponse response = new ApiResponse(200, "UPDATED EMPLOYEE", employee);
+            log(response);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
@@ -72,6 +74,7 @@ public class EmployeeController {
         Employee employee = employeeService.findEmployeeById(id)
                 .orElseThrow(() -> new ResourceException(String.format("Didn't find Employee by the id: %s", id)));
         ApiResponse response = new ApiResponse(200, "LOADED EMPLOYEE", employee);
+        log(response);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -81,8 +84,14 @@ public class EmployeeController {
         List<EmployeeDTO> employeeDTOS = new ArrayList<>();
         employees.forEach(db -> employeeDTOS.add(employeeHelper.convertDbEmployeeToEmployeeDTO(db)));
         ApiResponse response = new ApiResponse(200, "LOADED EMPLOYEES", employeeDTOS);
+        log(response);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    private void log(ApiResponse response) {
+        if (log.isDebugEnabled()) {
+            log.debug(String.format("Http response: %s", response.toString()));
+        }
+    }
 
 }

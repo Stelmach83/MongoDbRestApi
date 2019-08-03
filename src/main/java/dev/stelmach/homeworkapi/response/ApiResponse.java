@@ -1,5 +1,8 @@
 package dev.stelmach.homeworkapi.response;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class ApiResponse {
 
     private int code;
@@ -37,5 +40,10 @@ public class ApiResponse {
 
     public void setMessage(Object message) {
         this.message = message;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
     }
 }

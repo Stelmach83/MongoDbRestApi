@@ -1,6 +1,8 @@
 package dev.stelmach.homeworkapi.service;
 
 import dev.stelmach.homeworkapi.model.Employee;
+import dev.stelmach.homeworkapi.model.dto.EmployeeDTO;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,8 +15,6 @@ public interface EmployeeService {
     Employee updateEmployee(Employee employee);
     long generateIdSequence(String seq);
     boolean isEmailUnique(String email);
-    boolean hasEmailChangedForEmployee(Employee employee, String email);
-    Employee getEmployeeByEmail(String email);
-    boolean isEmployeesEmailCurrent(long id, String email);
+    boolean validateUpdatedEmployee(Employee employee, EmployeeDTO employeeDTO, BindingResult bindingResult);
 
 }

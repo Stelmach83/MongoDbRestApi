@@ -3,12 +3,15 @@ package dev.stelmach.homeworkapi.service;
 import dev.stelmach.homeworkapi.exception.ResourceException;
 import dev.stelmach.homeworkapi.model.Employee;
 import dev.stelmach.homeworkapi.model.EmployeeSequence;
+import dev.stelmach.homeworkapi.model.dto.EmployeeDTO;
 import dev.stelmach.homeworkapi.repository.EmployeeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Objects;
@@ -85,20 +88,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getEmployeeByEmail(String email) {
-        return employeeRepository.getDistinctByEmail(email);
+    public boolean validateUpdatedEmployee(Employee employee, EmployeeDTO employeeDTO, BindingResult bindingResult) {
+        return isUpdatedEmployeeValid(employeeDTO, employee, bindingResult);
     }
 
-    @Override
-    public boolean hasEmailChangedForEmployee(Employee employee, String email) {
-        return false;
+    private boolean isUpdatedEmployeeValid(@Validated(EmployeeDTO.Existing.class) EmployeeDTO employeeDTO, Employee employee, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return bindingResult.getAllErrors().size() == 1 && Objects.equals(bindingResult.getRawFieldValue("email"), employee.getEmail());
+        } else {
+            return true;
+        }
     }
 
-    @Override
-    public boolean isEmployeesEmailCurrent(long id, String email) {
-        Employee employee = findEmployeeById(id)
-                .orElseThrow(() -> new ResourceException(String.format("Could not find Employee by the id: %s", id)));
-        String currentEmail = employee.getEmail();
-        return email.equals(currentEmail);
-    }
 }
