@@ -100,4 +100,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
+    @Override
+    public void deleteEmployee(Employee employee, EmployeeDTO employeeDTO) {
+        employeeRepository.delete(employee);
+        if (log.isInfoEnabled()) {
+            log.info(String.format("Deleted Employee: %n%s", employeeDTO.toString()));
+        }
+    }
+
 }

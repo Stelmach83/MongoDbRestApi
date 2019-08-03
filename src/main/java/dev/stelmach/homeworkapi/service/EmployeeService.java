@@ -16,5 +16,6 @@ public interface EmployeeService {
     long generateIdSequence(String seq);
     boolean isEmailUnique(String email);
     boolean validateUpdatedEmployee(Employee employee, EmployeeDTO employeeDTO, BindingResult bindingResult);
+    void deleteEmployee(Employee employee, EmployeeDTO employeeDTO);
 
 }

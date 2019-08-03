@@ -1,6 +1,8 @@
 package dev.stelmach.homeworkapi.model.dto;
 
 import dev.stelmach.homeworkapi.validation.UniqueEmail;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -66,5 +68,10 @@ public class EmployeeDTO {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
     }
 }

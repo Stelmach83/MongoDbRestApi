@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -85,6 +86,17 @@ public class EmployeeController {
         List<EmployeeDTO> employeeDTOS = new ArrayList<>();
         employees.forEach(db -> employeeDTOS.add(employeeHelper.convertDbEmployeeToEmployeeDTO(db)));
         ApiResponse response = new ApiResponse(200, "LOADED EMPLOYEES", employeeDTOS);
+        log(response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/employees/{id}")
+    public ResponseEntity<ApiResponse> deleteEmployees(@PathVariable(name = "id") long id) {
+        Employee employee = employeeService.findEmployeeById(id)
+                .orElseThrow(() -> new ResourceException(String.format("Didn't find Employee by the id: %s", id)));
+        EmployeeDTO employeeDTO = employeeHelper.convertDbEmployeeToEmployeeDTO(employee);
+        employeeService.deleteEmployee(employee, employeeDTO);
+        ApiResponse response = new ApiResponse(200, "DELETED EMPLOYEE", employeeDTO);
         log(response);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
