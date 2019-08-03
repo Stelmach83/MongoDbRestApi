@@ -73,7 +73,8 @@ public class EmployeeController {
     public ResponseEntity<ApiResponse> getEmployee(@PathVariable(name = "id") long id) {
         Employee employee = employeeService.findEmployeeById(id)
                 .orElseThrow(() -> new ResourceException(String.format("Didn't find Employee by the id: %s", id)));
-        ApiResponse response = new ApiResponse(200, "LOADED EMPLOYEE", employee);
+        EmployeeDTO employeeDTO = employeeHelper.convertDbEmployeeToEmployeeDTO(employee);
+        ApiResponse response = new ApiResponse(200, "LOADED EMPLOYEE", employeeDTO);
         log(response);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
