@@ -18,7 +18,7 @@ public class EmployeeDTO {
     @UniqueEmail(message = "This 'email' is already taken", groups = {EmployeeDTO.New.class, EmployeeDTO.Existing.class})
     private String email;
     @Pattern(regexp = "^([\\+]?[1]( |-)?)?(\\(?[0-9]{3}\\)?|[0-9]{3})( |-)?([0-9]{3}( |-)?[0-9]{4}|[a-zA-Z0-9]{7})$",
-            message = "Field 'phoneNumber' must be a US phone number.", groups = {EmployeeDTO.New.class, EmployeeDTO.Existing.class})
+            message = "Field 'phoneNumber' must be a US phone number", groups = {EmployeeDTO.New.class, EmployeeDTO.Existing.class})
     private String phoneNumber;
 
     public EmployeeDTO() {

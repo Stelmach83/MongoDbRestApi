@@ -76,8 +76,8 @@ public class ExceptionController {
 
     private void log(ApiResponse error) {
         if (log.isErrorEnabled()) {
-            String code = error.getCode() + " - %s";
-            log.error(String.format(code, error.getMessage()));
+            String code = "Error code: %s - %s";
+            log.error(String.format(code, error.getCode(), error.getMessage()));
         }
     }
 }
