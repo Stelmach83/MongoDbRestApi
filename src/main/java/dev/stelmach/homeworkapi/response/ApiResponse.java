@@ -5,41 +5,41 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ApiResponse {
 
-    private int code;
-    private String status;
-    private Object message;
+    private int status;
+    private String message;
+    private Object result;
 
     public ApiResponse() {
     }
 
-    public ApiResponse(int code, String status, Object message) {
-        this.code = code;
+    public ApiResponse(int status, String message, Object result) {
         this.status = status;
         this.message = message;
+        this.result = result;
     }
 
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public Object getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage(Object message) {
+    public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Object getResult() {
+        return result;
+    }
+
+    public void setResult(Object result) {
+        this.result = result;
     }
 
     @Override

@@ -24,9 +24,9 @@ public class ExceptionController {
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ApiResponse> handle404Exception(NoHandlerFoundException e) {
         ApiResponse error = new ApiResponse();
-        error.setCode(404);
-        error.setStatus("End-point not found.");
-        error.setMessage(e.getMessage());
+        error.setStatus(404);
+        error.setMessage("End-point not found.");
+        error.setResult(e.getMessage());
         log(error);
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
@@ -37,9 +37,9 @@ public class ExceptionController {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiResponse> handleJsonException(HttpMessageNotReadableException e) {
         ApiResponse error = new ApiResponse();
-        error.setCode(400);
-        error.setStatus("Incorrect json structure.");
-        error.setMessage(e.getMessage());
+        error.setStatus(400);
+        error.setMessage("Incorrect json structure.");
+        error.setResult(e.getMessage());
         log(error);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
@@ -50,9 +50,9 @@ public class ExceptionController {
     @ExceptionHandler(ResourceException.class)
     public ResponseEntity<ApiResponse> handleDatabaseException(ResourceException e) {
         ApiResponse error = new ApiResponse();
-        error.setCode(400);
-        error.setStatus("Resource exception.");
-        error.setMessage(e.getMessage());
+        error.setStatus(400);
+        error.setMessage("Resource exception.");
+        error.setResult(e.getMessage());
         log(error);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
@@ -67,9 +67,9 @@ public class ExceptionController {
                 .findFirst()
                 .orElse(e.getMessage());
         ApiResponse error = new ApiResponse();
-        error.setCode(412);
-        error.setStatus("Validation error.");
-        error.setMessage(errorMsg);
+        error.setStatus(412);
+        error.setMessage("Validation error.");
+        error.setResult(errorMsg);
         log(error);
         return new ResponseEntity<>(error, HttpStatus.PRECONDITION_FAILED);
     }
@@ -77,7 +77,7 @@ public class ExceptionController {
     private void log(ApiResponse error) {
         if (log.isErrorEnabled()) {
             String code = "Error code: %s - %s";
-            log.error(String.format(code, error.getCode(), error.getMessage()));
+            log.error(String.format(code, error.getStatus(), error.getResult()));
         }
     }
 }
